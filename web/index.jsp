@@ -1,3 +1,6 @@
+<%@page import="Negocio.Convocatoria"%>
+<%@page import="Datos.ConvocatoriaDAO"%>
+<%@page import="Negocio.Usuario"%>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
 <!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
@@ -126,35 +129,41 @@
                         <img class="dividerline" src="img/sep.png" alt="">
                         <h3>El apoyo alimentario  para el perioro 2015-III se realizar√° dentro de las fechas Siguientes:</h3>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="restmenuwrap">
-                                <h3 class="maincat notopmarg text-center">APPETIZERS</h3>
-                                <div class="restitem clearfix">
-                                    <div class="rm-thumb" style="background-image: url(http://wowthemes.net/demo/leroy/img/dummies/1.jpg)">
+                   <form>
+                    <%
+                                        Usuario user = new Usuario();
+
+                                        user.setUser("validador");
+                                        user.setPasswd("validador");
+
+                                        ConvocatoriaDAO conv = new ConvocatoriaDAO();
+                                        Convocatoria c = new Convocatoria();
+                                        //Buscar convocatoria activa
+
+                                        c = conv.buscarConvocatoria("Activa", user);
+                                       
+
+                                       
+
+                                    %>
+                                    <div class="form-group">
+
+                                        <label for="CedulaInput">AÒo Convocatoria </label>
+                                        <input name="nombresocio" style="width:200px;height:25px" type="text" readonly="readonly" value=<%out.print(c.getD_anoConvocatoria());%> class="form-control" id="cedulaInput">
+
+                                        <label for="CedulaInput">Periodo Convocatoria</label>
+                                        <input name="nombresocio" style="width:200px;height:25px" type="text" readonly="readonly" value=<%out.print(c.getPeriodo());%> class="form-control" id="cedulaInput">
+
+                                        <label for="CedulaInput">Fecha de Inicio (yyyy-mm-dd)</label>
+                                        <input name="nombresocio" style="width:200px;height:25px" type="text" readonly="readonly" value=<%out.print(c.getF_inicioConvocatoria());%> class="form-control" id="cedulaInput">
+
+                                        <label for="CedulaInput">Fecha de finalizacion (yyyy-mm-dd)</label>
+                                        <input name="nombresocio" style="width:200px;height:25px" type="text" readonly="readonly" value=<%out.print(c.getF_finConvocatoria());%> class="form-control" id="cedulaInput">
+
+                                       
                                     </div>
-                                    <h5>Sweet, Sticky and Spicy Chicken</h5>
-                                    <p>
-                                        Pepperoni, mozzarella cheese and Italian seasonings are rolled together, baked to delicious perfection, then cut into bite-sized delights. Your guests will beg for the recipe!"
-                                    </p>
-                                </div>
-                                <div class="restitem clearfix">
-                                    <div class="rm-thumb" style="background-image: url(http://wowthemes.net/demo/leroy/img/dummies/2.jpg)">
-                                    </div>
-                                    <h5>Luxur Oyster</h5>
-                                    <p>
-                                        Pepperoni, mozzarella cheese and Italian seasonings are rolled together, baked to delicious perfection, then cut into bite-sized delights. Your guests will beg for the recipe!"
-                                    </p>
-                                </div>
-                                <div class="restitem clearfix">
-                                    <div class="rm-thumb" style="background-image: url(http://wowthemes.net/demo/leroy/img/dummies/3.jpg)">
-                                    </div>
-                                    <h5>Sweet, Sticky and Spicy Chicken</h5>
-                                    <p>
-                                        Pepperoni, mozzarella cheese and Italian seasonings are rolled together, baked to delicious perfection, then cut into bite-sized delights. Your guests will beg for the recipe!"
-                                    </p>
-                                </div>
-                            </div>
+                                </form>
+                    
                         </div>
                         <div class="col-md-4">
                             <div class="restmenuwrap">
