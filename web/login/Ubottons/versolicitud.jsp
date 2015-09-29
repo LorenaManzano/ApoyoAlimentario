@@ -5,6 +5,25 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Datos.UsuarioDAO"%>
+<%@page import="Util.RHException"%>
+<%@page import="java.io.IOException"%>
+<%@page import="Util.ServiceLocator"%>
+<%@page import="Negocio.Usuario"%>
+<%@page import="Negocio.Estudiante"%>
+<%@page import="Datos.EstudianteDAO"%>
+<%@page import="java.sql.*"%>
+
+<%  
+        Usuario user = new Usuario();
+        UsuarioDAO u = new UsuarioDAO();
+        user.setUser((String) session.getAttribute("USUARIO"));
+        user.setPasswd((String) session.getAttribute("CONT"));
+
+        Estudiante estuser = new Estudiante();
+        EstudianteDAO estu = new EstudianteDAO();
+        estuser=estu.buscarEstudiante(estu.consultarIdEstudiante(user.getUser(), user), user);
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -206,7 +225,7 @@
                     <ul class="sidebar-menu" id="nav-accordion">
 
                         <p class="centered"><a href="perfil.jsp"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-                        <h5 class="centered">Marcel Newman</h5>
+                        <h5 class="centered"><%out.print(estuser.getN_nomEstudiante());%></h5>
 
 
                         <li class="sub-menu">
@@ -253,64 +272,64 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Código Estudiante</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getK_codEstudiante());%> >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Documento de Identificación</label>
                                         <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly" >
+                                           <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getD_identificacion());%>>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Promedio Académico</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="text" class="form-control" readonly="readonly"  value=<%out.print(estuser.getD_promedio());%>>
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Nombre</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getN_nomEstudiante());%> >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Apellidos</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly" >
+                                            <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getN_apeEstudiante());%> >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Telefono</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getT_telefono());%> >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Direccion</label>
                                         <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
+                                           <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getD_direccion());%> >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Materias Perdidas</label>
                                         <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
+                                           <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getD_materias_perdidas());%> >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Facultad</label>
                                         <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
+                                           <input type="text" class="form-control" readonly="readonly">
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Proyecto Curricular</label>
                                         <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
+                                           <input type="text" class="form-control" readonly="readonly"  value=<%out.print(estuser.getK_est_ProyCurricular());%>>
                                         </div>
                                     </div>
 
