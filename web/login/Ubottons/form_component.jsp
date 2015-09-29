@@ -3,8 +3,30 @@
     Created on : 27/09/2015, 07:20:48 PM
     Author     : LORENA MANZANO
 --%>
-
+<%@page import="Datos.UsuarioDAO"%>
+<%@page import="Util.RHException"%>
+<%@page import="java.io.IOException"%>
+<%@page import="Util.ServiceLocator"%>
+<%@page import="Negocio.Usuario"%>
+<%@page import="Negocio.Estudiante"%>
+<%@page import="Datos.EstudianteDAO"%>
+<%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%  
+        Usuario user = new Usuario();
+        UsuarioDAO u = new UsuarioDAO();
+        user.setUser((String) session.getAttribute("USUARIO"));
+        user.setPasswd((String) session.getAttribute("CONT"));
+        
+%>
+<%
+        Estudiante estuser = new Estudiante();
+        EstudianteDAO estu = new EstudianteDAO();
+        estuser=estu.buscarEstudiante(estu.consultarIdEstudiante(user.getUser(), user), user);
+%>
+
+    
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -206,7 +228,7 @@
                     <ul class="sidebar-menu" id="nav-accordion">
 
                         <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-                        <h5 class="centered">Marcel Newman</h5>
+                        <h5 class="centered"><%out.print(estuser.getN_nomEstudiante());%></h5>
 
 
                         <li class="sub-menu">
@@ -230,6 +252,7 @@
                             </a>
 
                         </li>
+
 
                     </ul>
                     <!-- sidebar menu end-->
@@ -255,72 +278,25 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Código Estudiante</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getK_codEstudiante());%>>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Documento de Identificación</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Promedio Académico</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Nombre</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="text" class="form-control" readonly="readonly"  value=<%out.print(estuser.getN_nomEstudiante());%>>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Apellidos</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly" >
+                                            <input type="text" class="form-control" readonly="readonly" value=<%out.print(estuser.getN_apeEstudiante());%>>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Telefono</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Direccion</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Materias Perdidas</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Facultad</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Proyecto Curricular</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-
-                                    <br>
-                                    
+ 
+                                    <br>                              
                                 </form>
-
-
                             </div>
                         </div><!-- col-lg-12-->      	
                     </div><!-- /row -->
@@ -329,16 +305,6 @@
                         <div class="col-lg-12">
                             <div class="form-panel">
                                 <h4 class="mb"><i class="fa fa-angle-right"></i>Datos Socioeconómicos</h4>
-                                <br>
-                                <label class="col-sm-4 col-sm-4 control-label">Días que Tomará el Apoyo Alimentario</label>
-                                <select  name="ingresosfamiliares"  id="ingresosfamiliares" class="form-control">
-                                    <option value="1">1 día</option>
-                                    <option value="2">2 días</option>
-                                    <option value="3">3 días</option>		                         
-                                    <option value="4">4 días</option>
-                                    <option value="5">5 días</option>                                      
-                                </select>
-                               
                                 <br>
                                 <label class="col-sm-2 col-sm-2 control-label">Ingresos Familiares</label>
                                 <select  name="ingresosfamiliares"  id="ingresosfamiliares" class="form-control">
@@ -368,20 +334,17 @@
                                     <option value="1">Presenta algún tipo de discapacidad física o mental</option>
                                     <option value="2">Sufre alguna patología o sintomatología asociada con problemas de alimentación</option>                                        	  
                                 </select>
-                                <br><button type="button" class="btn btn-round btn-success"  >Enviar Solicitud</button>
+                                <br><button type="submit" class="btn btn-round btn-success"  >Enviar Solicitud</button>
 
 
 
 
                             </div><!-- /form-panel -->
                         </div><!-- /col-lg-12 -->
-
-
-
                     </div><!-- /row -->
 
 
-                </section>
+                </section><! --/wrapper -->
             </section><!-- /MAIN CONTENT -->
 
             <!--main content end-->
@@ -440,4 +403,3 @@
 
     </body>
 </html>
-
