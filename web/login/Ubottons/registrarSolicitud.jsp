@@ -3,8 +3,26 @@
     Created on : 27/09/2015, 07:20:48 PM
     Author     : LORENA MANZANO
 --%>
-
+<%@page import="Datos.UsuarioDAO"%>
+<%@page import="Util.RHException"%>
+<%@page import="java.io.IOException"%>
+<%@page import="Util.ServiceLocator"%>
+<%@page import="Negocio.Usuario"%>
+<%@page import="Negocio.Estudiante"%>
+<%@page import="Datos.EstudianteDAO"%>
+<%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%  
+        Usuario user = new Usuario();
+        UsuarioDAO u = new UsuarioDAO();
+        user.setUser((String) session.getAttribute("USUARIO"));
+        user.setPasswd((String) session.getAttribute("CONT"));
+        
+%>
+
+
+    
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,103 +55,97 @@
     <body>
 
         <section id="container" >
-             <!-- **********************************************************************************************************************************************************
-            Menu
+            <!-- **********************************************************************************************************************************************************
+            TOP BAR CONTENT & NOTIFICATIONS
             *********************************************************************************************************************************************************** -->
-           
+            
             <%@ include file="menu.jsp" %>  
-
-
             <!-- **********************************************************************************************************************************************************
             MAIN CONTENT
             *********************************************************************************************************************************************************** -->
             <!--main content start-->
             <section id="main-content">
                 <section class="wrapper">
-                   
+                    <h3><i class="fa fa-angle-right"></i>Registrar Socilitud</h3>
                     <br>
-                    
+                    Diligencie el formulario para poder acceder al apoyo alimentario
                     <!-- BASIC FORM ELELEMNTS -->
-                    <div class="row mt">
+                     <div class="row mt">
                         <div class="col-lg-12">
                             <div class="form-panel">
                                 <h4 class="mb"><i class="fa fa-angle-right"></i>Datos Personales</h4>
-                                <form class="form-horizontal style-form" method="get">
+                                     <form class="form-horizontal style-form" action="componente2.jsp" method="post">
+                                    
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Código Estudiante</label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="number" name="idEstudiante" class="form-control"  required >
                                         </div>
                                     </div>
+                                
                                     <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Documento de Identificación</label>
+                                        <label class="col-sm-2 col-sm-2 control-label">Cantidad dias de beneficio en la semana</label>
                                         <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Promedio Académico</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
+                                            <input type="number" name="dias_beneficio" class="form-control" placeholder="0-5"  >
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Nombre</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Apellidos</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Telefono</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Direccion</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Materias Perdidas</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Facultad</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Proyecto Curricular</label>
-                                        <div class="col-sm-5">
-                                           <input type="text" class="form-control" readonly="readonly"  >
-                                        </div>
-                                    </div>
+                                                                   
 
                                     <br>
-                                    <br><button type="button" class="btn btn-round btn-success"  ><a href="MenuInicial.jsp"> Regresar</a></button>
-
                                     
-                                </form>
+                                    <button  class="btn btn-round btn-success" type="submit" name="bEnviarSolicitud" >Enviar Solicitud</a></button>
+                                      </form>
 
 
                             </div>
                         </div><!-- col-lg-12-->      	
                     </div><!-- /row -->
-                  
+                    
+                    <!-- INPUT MESSAGES -->
+                    <div class="row mt">
+                        <div class="col-lg-12">
+                            <div class="form-panel">
+                                <h4 class="mb"><i class="fa fa-angle-right"></i>Datos Socioeconómicos</h4>
+                                <br>
+                                <label class="col-sm-2 col-sm-2 control-label">Ingresos Familiares</label>
+                                <select  name="ingresosfamiliares"  id="ingresosfamiliares" class="form-control">
+                                    <option value="1">0-1.0 SMMLV</option>
+                                    <option value="2">1.0-2.0 SMMLV</option>
+                                    <option value="3">2.0-3.0 SMMLV</option>		                         
+                                    <option value="4">3.0 SMMLV</option>                  	  
+                                </select>
+                                <br>
+                                <label class="col-sm-2 col-sm-2 control-label">Condiciones Familiares</label>
+                                <select  name="condicionesfamiliares"  id="condicionesfamiliares" class="form-control">
+                                    <option value="1">Sostiene el hogar en que vive</option>
+                                    <option value="2">Se sotiene a sí mismo</option>
+                                    <option value="3">Vive fuera de su núcleo familiar inmediato</option>		                          <option value="4">Tiene conyuge, hijos y/u otras personas a cargo</option>                  	  
+                                </select> 
+                                <br>
+                                <label class="col-sm-3 col-sm-3 control-label">Procedencia y lugar de residencia</label>
+                                <select  name="procedencia"  id="procedencia" class="form-control">
+                                    <option value="1">Vive en cada del empleador</option>
+                                    <option value="2">Se encuentra en condición de desplazamiento forzado</option>
+                                    <option value="3">Proviene de municipios distintos a Bogotá </option>		                          <option value="4">Reside en zonas de alto grado de vulnerabilidad</option>                                      	  
+                                </select> 
+
+                                <br>
+                                <label class="col-sm-3 col-sm-3 control-label">Condiciones de salud</label>
+                                <select  name="salud"  id="salud" class="form-control">
+                                    <option value="1">Presenta algún tipo de discapacidad física o mental</option>
+                                    <option value="2">Sufre alguna patología o sintomatología asociada con problemas de alimentación</option>                                        	  
+                                </select>
+                                <br><button type="submit" class="btn btn-round btn-success"  >Enviar Solicitud</button>
+
+
+
+
+                            </div><!-- /form-panel -->
+                        </div><!-- /col-lg-12 -->
+                    </div><!-- /row -->
+
+
                 </section><! --/wrapper -->
             </section><!-- /MAIN CONTENT -->
 
@@ -193,4 +205,3 @@
 
     </body>
 </html>
-

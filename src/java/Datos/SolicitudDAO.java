@@ -19,33 +19,28 @@ import javax.swing.JOptionPane;
  * @author Brandon
  */
 public class SolicitudDAO {
-        public String registarSolicitud(Solicitud s, Usuario user) {
+        public String registrarSolicitud(Solicitud s, Usuario user) {
         String error ="";
       
-
-        
-
         try {
 
-            String strSQL = "INSERT INTO SOLICITUD VALUES(?,?,?,?,?,?,?)";
+            String strSQL = "INSERT INTO SOLICITUD(k_idSolicitud, e_estSolicitud, k_est_codEstudiante, k_conv_convocatoria, d_diasbeneficio, f_solicitud) VALUES(SEQ_SOLICITUD.NEXTVAL,'Recibida',?,?,?,SYSDATE)";
+
 
             Connection conexion = ServiceLocator.getInstance(user).tomarConexion();
 
             PreparedStatement prepStmt = conexion.prepareStatement(strSQL);
-
-            prepStmt.setInt(1, s.getK_idSolicitud());
-            prepStmt.setString(2, s.getE_estSolicitud());
-            prepStmt.setInt(3, s.getK_est_codEstudiante());
-            prepStmt.setInt(4, s.getK_func_idFuncionario());
-            prepStmt.setInt(5, s.getK_conv_convocatoria());
-            prepStmt.setInt(6, s.getD_diasbeneficio());
-            prepStmt.setString(7, s.getF_solicitud());
-
+            
+            prepStmt.setInt(1, s.getK_est_codEstudiante());
+            prepStmt.setInt(2, s.getK_conv_convocatoria());
+            prepStmt.setInt(3, s.getD_diasbeneficio());
+           
+            
             prepStmt.executeUpdate();
             prepStmt.close();
             ServiceLocator.getInstance(user).commit();
 
-            error = error + " Registrar solicitud: " +  s.getK_idSolicitud() ;
+          //  error = error + " Registrar solicitud: " +  s.getK_idSolicitud() ;
         } catch (SQLException e) {
      
             error = "Solictud_DAO " + "Registrar Solicitud " + e.getMessage();
